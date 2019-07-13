@@ -1,4 +1,5 @@
 bin/
+*.dump
 *.efi
 *.dll
 *.lib
