@@ -1,3 +1,4 @@
+bin/
 *.efi
 *.dll
 *.lib
