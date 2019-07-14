@@ -4,4 +4,5 @@ bin/
 *.dll
 *.lib
 *.ll
+*.o
 *.s
