@@ -3,14 +3,14 @@ CFLAGS=--target=ebc -fno-stack-protector -fshort-wchar -Iinclude
 LD=lld-link
 LDFLAGS=-subsystem:efi_application -nodefaultlib -dll
 
-SRCS=$(wildcard test/*.c)
+SRCS=$(sort $(wildcard test/*.c))
 OBJS=$(SRCS:.c=.o)
 BINS=$(OBJS:.o=.efi)
 DMPS=$(BINS:.efi=.dump)
 
-all: efi
+.PRECIOUS: $(OBJS)
 
-efi: $(BINS)
+all: $(BINS)
 
 dump: $(DMPS)
 
@@ -20,7 +20,7 @@ test/%.efi: test/%.o
 test/%.dump: test/%.efi
 	llvm-objdump -d $< > $@
 
-ovmf: efi
+ovmf: $(BINS)
 	qemu-system-x86_64 \
 	  -drive if=pflash,format=raw,readonly,file=bin/OVMF.fd \
 	  -drive file=fat:rw:. \
@@ -31,4 +31,4 @@ ovmf: efi
 clean:
 	@rm -f test/*.dump test/*.efi test/*.dll test/*.lib test/*.ll test/*.o
 
-.PHONY: ovmf clean
+.PHONY: clean dump ovmf
