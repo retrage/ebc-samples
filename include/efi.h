@@ -1,14 +1,8 @@
-#ifndef EFI_H_
-#define EFI_H_
+#ifndef EBC_EFI_H_
+#define EBC_EFI_H_
 
-typedef unsigned char uint8_t;
-typedef char int8_t;
-typedef unsigned short uint16_t;
-typedef short int16_t;
-typedef unsigned int uint32_t;
-typedef int int32_t;
-typedef unsigned long uint64_t;
-typedef long int64_t;
+#include "stdint.h"
+#include "stdbool.h"
 
 #define IN
 #define OUT
@@ -30,6 +24,7 @@ typedef int32_t   INT32;
 typedef uint32_t  UINT32;
 typedef int64_t   INT64;
 typedef uint64_t  UINT64;
+/* FIXME: INTN and UINTN may be different types between EBC and native */
 typedef int64_t   INTN;
 typedef uint64_t  UINTN;
 typedef UINTN   EFI_STATUS;
@@ -152,4 +147,4 @@ typedef struct EFI_INPUT_KEY {
   CHAR16            UnicodeChar;
 } EFI_INPUT_KEY;
 
-#endif /* EFI_H_ */
+#endif /* EBC_EFI_H_ */
