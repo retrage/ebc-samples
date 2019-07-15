@@ -5,17 +5,23 @@ LDFLAGS=-subsystem:efi_application -nodefaultlib -dll
 
 SRCS=$(sort $(wildcard test/*.c))
 OBJS=$(SRCS:.c=.o)
+ASMS=$(SRCS:.c=.s)
 BINS=$(OBJS:.o=.efi)
 DMPS=$(BINS:.efi=.dump)
 
 .PRECIOUS: $(OBJS)
 
-all: $(BINS)
+all: $(BINS) $(DMPS)
+
+asm: $(ASMS)
 
 dump: $(DMPS)
 
 test/%.efi: test/%.o
 	$(LD) $(LDFLAGS) -entry:efi_main $< -out:$@
+
+test/%.s: test/%.c
+	$(CC) $(CFLAGS) -S $< -o $@
 
 test/%.dump: test/%.efi
 	llvm-objdump -d $< > $@
@@ -29,6 +35,6 @@ ovmf: $(BINS)
 	  -serial stdio
 
 clean:
-	@rm -f test/*.dump test/*.efi test/*.dll test/*.lib test/*.ll test/*.o
+	@rm -f $(DMPS) $(BINS) $(OBJS) $(ASMS) test/*.dll test/*.lib
 
-.PHONY: clean dump ovmf
+.PHONY: clean asm dump ovmf
