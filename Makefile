@@ -1,7 +1,7 @@
 CC=clang
 CFLAGS=--target=ebc -fno-stack-protector -fshort-wchar -Iinclude
 LD=lld-link
-LDFLAGS=-subsystem:efi_application -nodefaultlib -dll
+LDFLAGS=-subsystem:efi_application -nodefaultlib -dll -opt:noicf
 
 SRCS=$(sort $(wildcard test/*.c))
 OBJS=$(SRCS:.c=.o)
